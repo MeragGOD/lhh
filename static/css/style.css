@@ -1,8 +1,46 @@
-.header{
-    text-align: center;
-    margin-top: 30px;
+/* Container cho từng VM */
+.vm-row {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
 }
-.header a{
-    padding:5px 15px;
-    text-decoration: none;
+
+/* Input trong VM row */
+.vm-row input {
+    width: 120px;
+    padding: 4px;
+    margin-right: 8px;
+    border-radius: 3px;
+    border: 1px solid #aaa;
+}
+
+/* Nút Delete */
+.vm-row button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.vm-row button:hover {
+    background-color: #c0392b;
+}
+
+/* Nút Add One, Submit */
+button#addOneButton, button#vmsInfoSubmit {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    margin-top: 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button#addOneButton:hover, button#vmsInfoSubmit:hover {
+    background-color: #2980b9;
 }

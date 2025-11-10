@@ -21,20 +21,21 @@ func printVersion() {
 }
 
 func main() {
+	// It seems that the -X parameter of go build -ldflags can only set the values for the variables in the main package
 	models.BuildDate = buildDate
 	models.GitCommit = gitCommit
 
 	versionFlag := flag.Bool("v", false, "Print the current version and exit.")
 	flag.Parse()
-	if *versionFlag {
+	switch {
+	case *versionFlag:
 		printVersion()
 		return
+	default:
+		// continue with other stuff
 	}
 
-	// ===============================
-	// BỎ QUA INIT CLOUD / OPENSTACK
-	// ===============================
-	// models.InitSomeThing()
+	models.InitSomeThing()
 
 	numCpuToUse := runtime.NumCPU()
 	beego.Info(fmt.Sprintf("Using %d CPU cores for goroutines.", numCpuToUse))
@@ -47,7 +48,9 @@ func main() {
 			beego.Error(outErr)
 			panic(outErr)
 		}
+		// When multi-cloud manager starts up, we do measure the network performance once instantly, because we need the network performance information to schedule applications when deploying them.
 		models.MeasNetPerf()
+		// periodically measure the network performance
 		netTestPeriodSec, err := strconv.Atoi(beego.AppConfig.String("NetTestPeriodSec"))
 		if err != nil {
 			beego.Error(fmt.Sprintf("Read config \"NetTestPeriodSec\" error: %s, set the period as the DefaultNetTestPeriodSec", err.Error()))
@@ -66,8 +69,5 @@ func main() {
 		beego.Info("Network performance test function is off.")
 	}
 
-	// ===============================
-	// CHỈ CHẠY BEGOO UI
-	// ===============================
 	beego.Run()
 }

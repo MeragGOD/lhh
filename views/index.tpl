@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.Website}}</title>
     <link rel="stylesheet" href="/static/css/style.css">
+<<<<<<< HEAD
     <!-- Font Awesome for icons -->
+=======
+    <!-- Thêm Font Awesome cho icons -->
+>>>>>>> origin/main
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <style>
         body {
@@ -15,11 +19,16 @@
             display:flex;
             flex-direction:column;
             min-height:100vh;
+<<<<<<< HEAD
             background: linear-gradient(135deg, #0d1117 0%, #1a1a2e 100%);
+=======
+            background:#0d1117;
+>>>>>>> origin/main
             color:#c9d1d9;
         }
         /* Header */
         header {
+<<<<<<< HEAD
             background: linear-gradient(90deg, #0d1117 0%, #16213e 100%);
             padding:40px 0;
             text-align:center;
@@ -28,10 +37,20 @@
         header h1 {
             margin:0;
             font-size:2.8rem;
+=======
+            background: linear-gradient(90deg,#0d1117,#1f1f1f);
+            padding:30px 0;
+            text-align:center;
+        }
+        header h1 { 
+            margin:0; 
+            font-size:2.5rem; 
+>>>>>>> origin/main
             color:#58a6ff;
             display: flex;
             align-items: center;
             justify-content: center;
+<<<<<<< HEAD
             gap: 15px;
             text-shadow: 0 2px 4px rgba(88, 166, 255, 0.3);
         }
@@ -40,10 +59,19 @@
             font-size:1.2rem;
             color:#8b949e;
             letter-spacing: 0.5px;
+=======
+            gap: 10px;
+        }
+        header p { 
+            margin:5px 0 0 0; 
+            font-size:1.1rem; 
+            color:#8b949e; 
+>>>>>>> origin/main
         }
         /* Navbar */
         nav {
             background:#161b22;
+<<<<<<< HEAD
             padding:12px 0;
             text-align:center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.5);
@@ -74,10 +102,40 @@
             max-width:1200px;
             margin:0 auto;
             text-align:center;
+=======
+            padding:10px 0;
+            text-align:center;
+        }
+        nav a {
+            color:#58a6ff;
+            margin:0 10px;
+            text-decoration:none;
+            font-weight:bold;
+            transition: color 0.2s ease;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        nav a:hover { 
+            color:#1f6feb; 
+            background: rgba(88, 166, 255, 0.1);
+        }
+        nav a.active { 
+            color:#ff7b72; 
+            background: rgba(255, 123, 114, 0.2);
+        }
+        /* Main content */
+        .main-content { 
+            flex:1; 
+            padding:40px 20px; 
+            max-width:1200px; 
+            margin:0 auto; 
+            text-align:center; 
+>>>>>>> origin/main
         }
         /* Hero section */
         .hero {
             background: linear-gradient(135deg, #1f1f1f, #0d1117);
+<<<<<<< HEAD
             border-radius: 16px;
             padding: 50px 30px;
             margin-bottom: 50px;
@@ -103,6 +161,29 @@
             color:#fff;
             padding:18px 20px;
             border-radius:10px;
+=======
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+        .hero h2 {
+            font-size: 2rem;
+            color: #58a6ff;
+            margin-bottom: 10px;
+        }
+        .hero p {
+            font-size: 1.1rem;
+            color: #8b949e;
+            line-height: 1.6;
+        }
+        /* Warning box - làm dismissible */
+        .warning {
+            background:#f85149;
+            color:#fff;
+            padding:15px;
+            border-radius:8px;
+>>>>>>> origin/main
             margin:20px auto;
             font-size:1.1rem;
             width:90%;
@@ -111,22 +192,33 @@
             align-items: center;
             justify-content: space-between;
             position: relative;
+<<<<<<< HEAD
             box-shadow: 0 4px 12px rgba(248, 81, 73, 0.3);
+=======
+>>>>>>> origin/main
         }
         .warning i { margin-right: 10px; }
         .warning button {
             background: none;
             border: none;
             color: #fff;
+<<<<<<< HEAD
             font-size: 1.3rem;
             cursor: pointer;
             padding: 0 8px;
             opacity: 0.9;
             transition: opacity 0.2s;
+=======
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0 5px;
+            opacity: 0.8;
+>>>>>>> origin/main
         }
         .warning button:hover { opacity: 1; }
         .warning.hidden { display: none; }
         .highlight { font-weight:bold; text-decoration:underline; }
+<<<<<<< HEAD
         /* Weather Section – Chọn thành phố & Hiển thị issues/gợi ý */
         .weather-section {
             background: linear-gradient(145deg, #16213e, #0f3460);
@@ -246,6 +338,14 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap:25px;
             margin-top:40px;
+=======
+        /* Dashboard cards */
+        .dashboard { 
+            display:grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap:25px; 
+            margin-top:40px; 
+>>>>>>> origin/main
         }
         .card {
             background:#161b22;
@@ -267,9 +367,15 @@
             height: 4px;
             background: linear-gradient(90deg, #58a6ff, #238636);
         }
+<<<<<<< HEAD
         .card:hover {
             transform: translateY(-8px);
             box-shadow:0 12px 32px rgba(0,0,0,0.6);
+=======
+        .card:hover { 
+            transform: translateY(-8px); 
+            box-shadow:0 12px 32px rgba(0,0,0,0.6); 
+>>>>>>> origin/main
         }
         .card i {
             font-size: 3rem;
@@ -277,6 +383,7 @@
             margin-bottom: 15px;
             display: block;
         }
+<<<<<<< HEAD
         .card h3 {
             margin:0 0 10px 0;
             color:#58a6ff;
@@ -286,6 +393,17 @@
             margin:0;
             font-size:1.5rem;
             color:#c9d1d9;
+=======
+        .card h3 { 
+            margin:0 0 10px 0; 
+            color:#58a6ff; 
+            font-size: 1.2rem;
+        }
+        .card p { 
+            margin:0; 
+            font-size:1.5rem; 
+            color:#c9d1d9; 
+>>>>>>> origin/main
             font-weight: bold;
         }
         /* Loading spinner nếu data loading */
@@ -308,16 +426,24 @@
             .warning{ font-size:1rem; padding:12px; flex-direction: column; gap:10px; }
             .hero { padding: 20px; }
             header h1 { font-size: 2rem; }
+<<<<<<< HEAD
             .dashboard { grid-template-columns: 1fr; gap:20px; }
             .weather-section { padding: 20px; }
+=======
+>>>>>>> origin/main
         }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header>
+<<<<<<< HEAD
         <h1><i class="fas fa-cloud-sun-rain"></i> {{.Website}}</h1>
         <p>Version: {{.VersionInfo}} | Optimize Your Multi-Cloud Scheduling with Smart Weather Insights</p>
+=======
+        <h1><i class="fas fa-cloud-sun"></i> {{.Website}}</h1>
+        <p>Version: {{.VersionInfo}} | Optimize Your Multi-Cloud Scheduling</p>
+>>>>>>> origin/main
     </header>
     <!-- Navbar -->
     <nav>
@@ -336,14 +462,21 @@
         <!-- Hero section -->
         <div class="hero">
             <h2>Welcome to Multi-Cloud Manager</h2>
+<<<<<<< HEAD
             <p>Effortlessly schedule containerized services across AWS, GCP, Azure, and more. Monitor resources, optimize RTT-based placement, and scale with ease using advanced algorithms like MCSSGA – now with real-time weather insights for adaptive scheduling.</p>
         </div>
        
+=======
+            <p>Effortlessly schedule containerized services across AWS, GCP, Azure, and more. Monitor resources, optimize RTT-based placement, and scale with ease using advanced algorithms like MCSSGA.</p>
+        </div>
+        
+>>>>>>> origin/main
         <!-- Warning message - dismissible -->
         <div id="warningBox" class="warning">
             <span><i class="fas fa-exclamation-triangle"></i> Please use your browser's <span class="highlight">Incognito Mode</span> to visit this website; cached resources may break some features.</span>
             <button onclick="dismissWarning()">&times;</button>
         </div>
+<<<<<<< HEAD
 
         <!-- Weather Section – Chọn thành phố & Hiển thị issues/gợi ý -->
         <div class="weather-section">
@@ -375,6 +508,9 @@
             </div>
         </div>
        
+=======
+        
+>>>>>>> origin/main
         <!-- Dashboard cards -->
         <div class="dashboard">
             <div class="card">
@@ -398,7 +534,11 @@
                 <p id="occupiedResources">{{.OccupiedResources}}</p>
             </div>
         </div>
+<<<<<<< HEAD
        
+=======
+        
+>>>>>>> origin/main
         <!-- Nếu data đang load, show spinner (tùy chọn) -->
         <!-- <div class="loading" id="loadingSpinner" style="display:none;"></div> -->
     </div>
@@ -409,8 +549,13 @@
         function dismissWarning() {
             document.getElementById('warningBox').classList.add('hidden');
         }
+<<<<<<< HEAD
        
         // Highlight active navbar link
+=======
+        
+        // Highlight active navbar link (cải thiện: check pathname thay href)
+>>>>>>> origin/main
         document.addEventListener('DOMContentLoaded', function() {
             const currentPath = window.location.pathname;
             document.querySelectorAll('nav a').forEach(link => {
@@ -421,7 +566,11 @@
                     link.classList.remove('active');
                 }
             });
+<<<<<<< HEAD
            
+=======
+            
+>>>>>>> origin/main
             // Lưu dismiss warning vào localStorage
             if (localStorage.getItem('dismissWarning') === 'true') {
                 dismissWarning();
@@ -431,6 +580,7 @@
                 localStorage.setItem('dismissWarning', 'true');
                 dismissWarning();
             });
+<<<<<<< HEAD
 
             // Weather update function (AJAX to /api/weather?city=hanoi) – Global để onchange gọi được
             window.updateWeather = function() {
@@ -483,6 +633,15 @@
             // Initial load
             updateWeather();
         });
+=======
+        });
+        
+        // Tùy chọn: Fetch real-time data (AJAX từ /api/stats)
+        // fetch('/api/stats').then(res => res.json()).then(data => {
+        //     document.getElementById('totalClouds').textContent = data.totalClouds;
+        //     // Tương tự cho các card khác
+        // });
+>>>>>>> origin/main
     </script>
 </body>
 </html>

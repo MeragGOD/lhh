@@ -6,8 +6,11 @@
 <title>Application - {{.Website}}</title>
 <link rel="stylesheet" href="/static/css/style.css">
 <script src="/static/js/application.js"></script>
+<<<<<<< HEAD
 <!-- Thêm Font Awesome cho icons -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+=======
+>>>>>>> origin/main
 <style>
 body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin:0; padding:0; display:flex; flex-direction:column; min-height:100vh; background:#0d1117; color:#c9d1d9; }
 header { background: linear-gradient(90deg,#0d1117,#1f1f1f); padding:20px 0; text-align:center; }
@@ -28,6 +31,7 @@ table th { background:#1f1f1f; color:#58a6ff; }
 table tr:hover { background:#272b33; }
 button { padding:6px 12px; border:none; border-radius:6px; cursor:pointer; background:#238636; color:#fff; }
 button:hover { background:#2ea043; }
+<<<<<<< HEAD
 
 /* CSS cho weather card mới */
 .weather-card {
@@ -38,21 +42,37 @@ button:hover { background:#2ea043; }
 .weather-card p { font-size:1.5rem; font-weight:bold; color:#c9d1d9; }
 .weather-alert { color: #ff7b72; font-weight: bold; }
 
+=======
+>>>>>>> origin/main
 @media(max-width:600px){ table th, table td{padding:8px;} nav a{margin:0 10px;} }
 </style>
 </head>
 <body>
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
 <header>
     <h1>{{.Website}}</h1>
     <p>Version: {{.VersionInfo}}</p>
 </header>
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
 <nav>
     <a href="/" >Home</a>
     <a href="/application" class="active">Application</a>
     <a href="/cloud">Cloud</a>
     <a href="/vm">VM</a>
 </nav>
+<<<<<<< HEAD
 <div class="main-content">
+=======
+
+<div class="main-content">
+
+>>>>>>> origin/main
     <h3>New Application</h3>
     <form method="get" action="/newApplication" target="_blank">
         <input type="radio" name="mode" value="basic" checked="checked" />Basic Mode
@@ -60,6 +80,7 @@ button:hover { background:#2ea043; }
         <input type="submit" value="New">
     </form>
 
+<<<<<<< HEAD
     <!-- Card Weather mới (thêm ở đây, trước Existing Applications) -->
     <div class="weather-card">
         <i class="fas fa-cloud-sun"></i>
@@ -69,10 +90,16 @@ button:hover { background:#2ea043; }
         {{if .WeatherAlert}}<p class="weather-alert">{{.WeatherAlert}}</p>{{end}}
     </div>
 
+=======
+>>>>>>> origin/main
     <h3>Existing Applications</h3>
     <div style="text-align:center; margin-bottom:10px;">
         <button id="deleteSelectedButton" type="button" onclick="deleteBatchApps()">Delete Selected Applications</button>
     </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
     <div class="table-container">
         <table>
             <tr>
@@ -115,7 +142,15 @@ button:hover { background:#2ea043; }
             {{end}}
         </table>
     </div>
+<<<<<<< HEAD
 </div>
 {{template "footer" .}}
+=======
+
+</div>
+
+{{template "footer" .}}
+
+>>>>>>> origin/main
 </body>
 </html>

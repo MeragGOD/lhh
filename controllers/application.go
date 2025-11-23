@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time" // Thêm import time
 
 	"github.com/astaxie/beego"
 
 	"emcontroller/models"
+	"emcontroller/weather" // Thêm import weather
 )
 
 type ApplicationController struct {
@@ -35,6 +37,20 @@ func (c *ApplicationController) Get() {
 	default:
 		beego.Info(fmt.Sprintf("The output should be web"))
 		c.Data["applicationList"] = appList
+
+		// Fetch weather (lat/lon Hà Nội, đổi nếu cần)
+		temp, err := weather.GetCurrentTemperature("21.0285", "105.8542")
+		if err != nil {
+			c.Data["WeatherTemp"] = "N/A (Lỗi: " + err.Error() + ")"
+		} else {
+			c.Data["WeatherTemp"] = fmt.Sprintf("%.1f°C", temp)
+			// Alert nếu nóng >35°C (liên quan auto-scale apps)
+			if temp > 35.0 {
+				c.Data["WeatherAlert"] = "Nóng – Gợi ý tăng replicas cho apps"
+			}
+		}
+		c.Data["WeatherTime"] = time.Now().Format("15:04") // Thời gian update
+
 		c.TplName = "application.tpl"
 	}
 

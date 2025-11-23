@@ -41,4 +41,6 @@ func init() {
 	beego.Router("/k8sNode/doAdd", &controllers.K8sNodeController{}, "post:DoAddNodes")
 
 	beego.Router("/netState", &controllers.NetStateController{}, "get:Get")
+	// weather API test route
+	beego.Router("/api/weather", &controllers.MainController{}, "get:GetWeather")
 }

@@ -6,6 +6,8 @@
 <title>Application - {{.Website}}</title>
 <link rel="stylesheet" href="/static/css/style.css">
 <script src="/static/js/application.js"></script>
+<!-- Thêm Font Awesome cho icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <style>
 body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin:0; padding:0; display:flex; flex-direction:column; min-height:100vh; background:#0d1117; color:#c9d1d9; }
 header { background: linear-gradient(90deg,#0d1117,#1f1f1f); padding:20px 0; text-align:center; }
@@ -26,25 +28,31 @@ table th { background:#1f1f1f; color:#58a6ff; }
 table tr:hover { background:#272b33; }
 button { padding:6px 12px; border:none; border-radius:6px; cursor:pointer; background:#238636; color:#fff; }
 button:hover { background:#2ea043; }
+
+/* CSS cho weather card mới */
+.weather-card {
+    background:#161b22; border-radius:12px; padding:20px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.5); margin-bottom:20px;
+}
+.weather-card i { font-size:2rem; color:#58a6ff; margin-bottom:10px; }
+.weather-card h4 { color:#58a6ff; margin-bottom:10px; }
+.weather-card p { font-size:1.5rem; font-weight:bold; color:#c9d1d9; }
+.weather-alert { color: #ff7b72; font-weight: bold; }
+
 @media(max-width:600px){ table th, table td{padding:8px;} nav a{margin:0 10px;} }
 </style>
 </head>
 <body>
-
 <header>
     <h1>{{.Website}}</h1>
     <p>Version: {{.VersionInfo}}</p>
 </header>
-
 <nav>
     <a href="/" >Home</a>
     <a href="/application" class="active">Application</a>
     <a href="/cloud">Cloud</a>
     <a href="/vm">VM</a>
 </nav>
-
 <div class="main-content">
-
     <h3>New Application</h3>
     <form method="get" action="/newApplication" target="_blank">
         <input type="radio" name="mode" value="basic" checked="checked" />Basic Mode
@@ -52,11 +60,19 @@ button:hover { background:#2ea043; }
         <input type="submit" value="New">
     </form>
 
+    <!-- Card Weather mới (thêm ở đây, trước Existing Applications) -->
+    <div class="weather-card">
+        <i class="fas fa-cloud-sun"></i>
+        <h4>Thời Tiết (Hà Nội) – Gợi Ý Auto-Scale</h4>
+        <p>{{.WeatherTemp}}</p>
+        <small>Cập nhật: {{.WeatherTime}}</small>
+        {{if .WeatherAlert}}<p class="weather-alert">{{.WeatherAlert}}</p>{{end}}
+    </div>
+
     <h3>Existing Applications</h3>
     <div style="text-align:center; margin-bottom:10px;">
         <button id="deleteSelectedButton" type="button" onclick="deleteBatchApps()">Delete Selected Applications</button>
     </div>
-
     <div class="table-container">
         <table>
             <tr>
@@ -99,10 +115,7 @@ button:hover { background:#2ea043; }
             {{end}}
         </table>
     </div>
-
 </div>
-
 {{template "footer" .}}
-
 </body>
 </html>

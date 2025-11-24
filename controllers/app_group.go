@@ -37,22 +37,76 @@ func (c *AppGroupController) DoNewAppGroup() {
 	}
 	defer algorithms.ScheMu.Unlock()
 
-	contentType := c.Ctx.Request.Header.Get("Content-Type")
+	// === 1. Chỉ nhận JSON cho thực nghiệm ===
+	contentType := strings.ToLower(c.Ctx.Request.Header.Get("Content-Type"))
 	beego.Info(fmt.Sprintf("The header \"Content-Type\" is [%s]", contentType))
 
-	switch {
-	case strings.Contains(strings.ToLower(contentType), JsonContentType):
-		beego.Info(fmt.Sprintf("The input body should be json"))
-		c.DoNewAppGroupJson()
-	default:
-		beego.Info(fmt.Sprintf("The input body should be form"))
-		c.DoNewAppGroupForm()
+	if !strings.Contains(contentType, "json") {
+		errMsg := "For experiment mode, only application/json body is supported"
+		beego.Error(errMsg)
+		c.Ctx.ResponseWriter.WriteHeader(http.StatusBadRequest)
+		_, _ = c.Ctx.ResponseWriter.Write([]byte(errMsg))
+		return
+	}
+
+	// === 2. Parse body thành []models.K8sApp ===
+	body := c.Ctx.Input.RequestBody
+	var apps []models.K8sApp
+	if err := json.Unmarshal(body, &apps); err != nil {
+		errMsg := fmt.Sprintf("Unmarshal request body to []K8sApp error: %s", err.Error())
+		beego.Error(errMsg)
+		c.Ctx.ResponseWriter.WriteHeader(http.StatusBadRequest)
+		_, _ = c.Ctx.ResponseWriter.Write([]byte(errMsg))
+		return
+	}
+
+	if len(apps) == 0 {
+		errMsg := "No applications provided in request body"
+		beego.Error(errMsg)
+		c.Ctx.ResponseWriter.WriteHeader(http.StatusBadRequest)
+		_, _ = c.Ctx.ResponseWriter.Write([]byte(errMsg))
+		return
+	}
+
+	// === 3. Lấy tên thuật toán từ header ===
+	algoName := c.Ctx.Request.Header.Get(SAHeaderKey)
+	if algoName == "" {
+		errMsg := "Missing header: " + SAHeaderKey
+		beego.Error(errMsg)
+		c.Ctx.ResponseWriter.WriteHeader(http.StatusBadRequest)
+		_, _ = c.Ctx.ResponseWriter.Write([]byte(errMsg))
+		return
+	}
+	beego.Info(fmt.Sprintf("Run scheduling algorithm [%s] on %d apps", algoName, len(apps)))
+
+	// === 4. Gọi scheduler nội bộ cho thực nghiệm ===
+	acceptedApps, usable, err := algorithms.ScheduleForExperiment(algoName, apps)
+	if err != nil {
+		errMsg := fmt.Sprintf("ScheduleForExperiment error: %s", err.Error())
+		beego.Error(errMsg)
+		c.Ctx.ResponseWriter.WriteHeader(http.StatusInternalServerError)
+		_, _ = c.Ctx.ResponseWriter.Write([]byte(errMsg))
+		return
+	}
+
+	// === 5. Nếu thuật toán báo unusable solution ===
+	if !usable {
+		errMsg := "unusable solution"
+		beego.Warn(fmt.Sprintf("Algorithm [%s] returned unusable solution", algoName))
+		c.Ctx.ResponseWriter.WriteHeader(http.StatusServiceUnavailable) // 503
+		_, _ = c.Ctx.ResponseWriter.Write([]byte(errMsg))
+		return
+	}
+
+	// === 6. Trả về acceptedApps dạng JSON ===
+	c.Ctx.ResponseWriter.Header().Set("Content-Type", "application/json")
+	c.Ctx.ResponseWriter.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(c.Ctx.ResponseWriter).Encode(acceptedApps); err != nil {
+		beego.Error(fmt.Sprintf("Encode acceptedApps to JSON error: %s", err.Error()))
 	}
 }
 
-// Used for json request, input is json
-// test command:
-// curl -i -X POST -H Content-Type:application/json -H Mcm-Scheduling-Algorithm:Mcssga -H Expected-Time-One-Cpu:35 -d '[ { "priority": 2, "autoScheduled": true, "name": "group-printtime", "replicas": 1, "hostNetwork": false, "containers": [ { "name": "printtime", "image": "172.27.15.31:5000/printtime:v1", "workDir": "/printtime", "resources": { "limits": { "memory": "30Mi", "cpu": "2", "storage": "2Gi" }, "requests": { "memory": "30Mi", "cpu": "2", "storage": "2Gi" } }, "commands": [ "bash" ], "args": [ "-c", "python3 -u main.py > $LOGFILE" ], "env": [ { "name": "PARAMETER1", "value": "testRenderenv1" }, { "name": "LOGFILE", "value": "/tmp/234/printtime.log" } ], "mounts": [ { "vmPath": "/tmp/asdff", "containerPath": "/tmp/234" }, { "vmPath": "/tmp/uyyyy", "containerPath": "/tmp/2345" } ] } ], "dependencies": [ { "appName": "group-nginx" }, { "appName": "group-ubuntu" } ] }, { "priority": 4, "autoScheduled": true, "name": "group-nginx", "replicas": 1, "hostNetwork": true, "containers": [ { "name": "nginx", "image": "172.27.15.31:5000/nginx:1.17.1", "workDir": "", "resources": { "limits": { "memory": "1024Mi", "cpu": "2", "storage": "20Gi" }, "requests": { "memory": "1024Mi", "cpu": "2", "storage": "20Gi" } }, "ports": [ { "containerPort": 80, "name": "fsd", "protocol": "tcp", "servicePort": "80", "nodePort": "30001" } ] } ], "dependencies": [ { "appName": "group-ubuntu" } ] }, { "priority": 4, "autoScheduled": true, "name": "group-ubuntu", "replicas": 1, "hostNetwork": true, "containers": [ { "name": "ubuntu", "image": "172.27.15.31:5000/ubuntu:latest", "workDir": "", "resources": { "limits": { "memory": "512Mi", "cpu": "1", "storage": "20Gi" }, "requests": { "memory": "512Mi", "cpu": "1", "storage": "20Gi" } }, "commands": [ "bash", "-c", "while true;do sleep 10;done" ], "args": null, "env": [ { "name": "asfasf", "value": "asfasf" }, { "name": "asdfsdf", "value": "sfsdf" } ], "mounts": [ { "vmPath": "/tmp/asdff", "containerPath": "/tmp/log" } ], "ports": null } ], "dependencies": [] } ]' http://localhost:20000/doNewAppGroup
+// Phần DoNewAppGroupJson / DoNewAppGroupForm để nguyên – dùng cho MCM “thật”
 func (c *AppGroupController) DoNewAppGroupJson() {
 	var apps []models.K8sApp
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &apps); err != nil {
@@ -74,7 +128,8 @@ func (c *AppGroupController) DoNewAppGroupJson() {
 	exTimeOneCpu, err := strconv.ParseFloat(exTimeOneCpuStr, 64)
 	if err != nil {
 		exTimeOneCpu = algorithms.DefaultExpAppCompuTimeOneCpu
-		outErr := fmt.Errorf("parse HTTP header key [%s] value [%s] to float64 error: %s, we set it to the default value [%g]", ExTimeOneCpuKey, exTimeOneCpuStr, err.Error(), exTimeOneCpu)
+		outErr := fmt.Errorf("parse HTTP header key [%s] value [%s] to float64 error: %s, we set it to the default value [%g]",
+			ExTimeOneCpuKey, exTimeOneCpuStr, err.Error(), exTimeOneCpu)
 		beego.Error(outErr)
 	} else {
 		beego.Info(fmt.Sprintf("Parse header %s to float [%g]", ExTimeOneCpuKey, exTimeOneCpu))
